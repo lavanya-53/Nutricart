@@ -1,0 +1,151 @@
+{
+  "_meta": {
+    "project": "NutriCart",
+    "version": "v1",
+    "status": "FROZEN",
+    "rule": "No changes without team approval. Frontend and backend must strictly follow this contract."
+  },
+
+  "auth": {
+    "POST /auth/register": {
+      "request": {
+        "email": "string",
+        "password": "string",
+        "name": "string"
+      },
+      "response": {
+        "user_id": "string",
+        "token": "string"
+      }
+    },
+    "POST /auth/login": {
+      "request": {
+        "email": "string",
+        "password": "string"
+      },
+      "response": {
+        "user_id": "string",
+        "token": "string"
+      }
+    }
+  },
+
+  "profile": {
+    "GET /user/profile": {
+      "response": {
+        "user_id": "string",
+        "age": "number",
+        "gender": "string",
+        "weight": "number",
+        "region": "string",
+        "health_conditions": ["diabetes", "pcos", "anemia", "hypertension"],
+        "dietary_preferences": ["veg", "non-veg", "vegan"],
+        "allergies": ["string"]
+      }
+    },
+    "PUT /user/profile": {
+      "request": {
+        "age": "number",
+        "gender": "string",
+        "weight": "number",
+        "region": "string",
+        "health_conditions": ["string"],
+        "dietary_preferences": ["string"],
+        "allergies": ["string"]
+      },
+      "response": {
+        "success": true
+      }
+    }
+  },
+
+  "meal_plan": {
+    "GET /meal-plan/today": {
+      "response": {
+        "date": "YYYY-MM-DD",
+        "is_reengineered": true,
+        "meals": [
+          {
+            "meal_id": "string",
+            "type": "breakfast | lunch | dinner | snack",
+            "name": "string",
+            "nutrition": {
+              "calories": "number",
+              "protein": "number",
+              "carbs": "number",
+              "fat": "number",
+              "key_micros": ["iron", "fiber"]
+            },
+            "explanation": {
+              "what_changed": "string",
+              "why_changed": "string",
+              "health_impact": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+
+  "feedback": {
+    "POST /meal/feedback": {
+      "request": {
+        "meal_id": "string",
+        "status": "eaten | skipped | partial"
+      },
+      "response": {
+        "reengineered": true,
+        "message": "Meal plan updated based on feedback"
+      }
+    }
+  },
+
+  "pantry": {
+    "GET /pantry": {
+      "response": [
+        {
+          "name": "string",
+          "quantity": "number",
+          "unit": "string",
+          "expiry": "YYYY-MM-DD | null"
+        }
+      ]
+    },
+    "POST /pantry": {
+      "request": {
+        "name": "string",
+        "quantity": "number",
+        "unit": "string",
+        "expiry": "YYYY-MM-DD | null"
+      },
+      "response": {
+        "success": true
+      }
+    }
+  },
+
+  "groceries": {
+    "GET /groceries/weekly": {
+      "response": {
+        "generated_from": "meal_plan",
+        "items": [
+          {
+            "name": "string",
+            "quantity": "number",
+            "unit": "string",
+            "source_reason": "meal | substitution | reengineering"
+          }
+        ]
+      }
+    }
+  },
+
+  "system": {
+    "GET /system/health": {
+      "response": {
+        "status": "ok",
+        "fallback_active": false
+      }
+    }
+  }
+}
